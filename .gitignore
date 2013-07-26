@@ -3,3 +3,6 @@ __pycache__
 *.pyc
 *.dat
 *.dot
+*.o
+*.d
+blockparser/parser

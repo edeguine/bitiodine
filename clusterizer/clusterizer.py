@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+
+import pdb
+
 from sys import argv
 
 from sqlite_wrapper import SQLiteWrapper
@@ -33,6 +36,11 @@ if options.generate:
 		die(e)
 
 	users, loaded = {}, False
+	try:
+		users, min_txid = load(FILENAME)
+		loaded = True
+	except:
+		min_txid = 1
 
 	try:
 		# Retrieve maximum cluster ID
@@ -40,12 +48,6 @@ if options.generate:
 	except ValueError:
 		# users is empty
 		max_cluster_id = 0
-
-	try:
-		users, min_txid = load(FILENAME)
-		loaded = True
-	except:
-		min_txid = 1
 
 	print("Scanning %d transactions, starting from %d." %(max_txid_res, min_txid))
 
@@ -67,6 +69,7 @@ if options.generate:
 		# IN - Heuristic 1 - multi-input transactions
 		found = None
 		for line in in_res:
+			
 			address = line[0]
 			if address is None:
 				continue
