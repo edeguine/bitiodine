@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import pdb
-
 from sys import argv
 
 from sqlite_wrapper import SQLiteWrapper
@@ -69,7 +67,6 @@ if options.generate:
 		# IN - Heuristic 1 - multi-input transactions
 		found = None
 		for line in in_res:
-			
 			address = line[0]
 			if address is None:
 				continue
