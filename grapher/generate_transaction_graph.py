@@ -29,7 +29,7 @@ print("Scanning %d transactions, starting from %d." %(max_txid_res, min_txid))
 for tx_id in range(min_txid, max_txid_res + 1):
 
   # Save progress to files
-  if tx_id % 1000000 == 0:
+  if tx_id % 500000 == 0:
     print("TRANSACTION ID: %d" % (tx_id))
     save(G, FILENAME, tx_id)
     print("%d nodes, %d edges so far." % (nx.number_of_nodes(G),nx.number_of_edges(G)))
@@ -40,11 +40,6 @@ for tx_id in range(min_txid, max_txid_res + 1):
   except:
     # Just go to the next transaction
     continue
-
-  # Pre-test: if more than two outputs, we can't say which is the real recipient.
-  # So, skip. (Very very few transactions skipped)
-  if len(out_res) > 2:
-  	continue
 
   # IN
   addresses = []
