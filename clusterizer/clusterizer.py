@@ -116,8 +116,7 @@ if options.generate:
 				# 
 				# so only applies to transactions happened before 18 Feb 2013 (UNIX TIMESTAMP - FIX_TIME: 1329523200)
 				users[address1] = found
-
-			if appeared2_res == 0 and appeared1_res == 1:
+			elif appeared2_res == 0 and appeared1_res == 1:
 				# This is deterministic - last address is actually a shadow address
 				users[address2] = found
 
@@ -146,5 +145,6 @@ if options.load:
 
 	with open("clusters_histogram.csv", "w") as f:
 		writer = csv.writer(f)
+		writer.writerow(['size', 'count'])
 		for i in range(0, len(hist)):
-			writer.writerow([bin_edges[i], hist[i]])
+			writer.writerow([int(bin_edges[i]), hist[i]])
