@@ -28,5 +28,8 @@ def decode_base58(bc, length):
     return n.to_bytes(length, 'big')
 
 def isBTCAddress(address):
-    bcbytes = decode_base58(address, 25)
+    try:
+        bcbytes = decode_base58(address, 25)
+    except:
+        return False
     return bcbytes[-4:] == sha256(sha256(bcbytes[:-4]).digest()).digest()[:4]

@@ -188,7 +188,9 @@ for address in addresses:
 	features['RECENTLY_ACTIVE'] = last_seen > current_utc_timestamp - DELTA_RECENT
 	features['ZOMBIE'] = features['EXHAUSTED'] and features['OLD']
 	features['DISPOSABLE'] = features['OLD'] and n_tx < 5 and time_delta < 60
-	features['SCAMMER'] = address in f.readFile('scammers.csv')
+	features['SCAMMER'] = f.isInList(address, 'scammers')
+	features['SHAREHOLDER'] = f.isInList(address, 'shareholders')
+	features['CASASCIUS'] = f.isInList(address, 'casascius')
 
 	# String labels
 	features['BITCOINTALK_USER'] = f.queryCSV('bitcointalk', address)

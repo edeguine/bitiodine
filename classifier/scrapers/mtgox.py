@@ -21,13 +21,13 @@ class MtGoxWorker(threading.Thread):
         db.execute('PRAGMA temp_store=MEMORY')
         
         connection = httplib.HTTPSConnection('mtgox.com')
-        
-	cursor = db.cursor()
-	cursor.execute("select max(tid) from trades where currency=?",(self.currency,))
-    try:
-    	max_tid = int(cursor.fetchone()[0])
-    except:
-        max_tid = 0
+            
+    	cursor = db.cursor()
+    	cursor.execute("select max(tid) from trades where currency=?",(self.currency,))
+        try:
+        	max_tid = int(cursor.fetchone()[0])
+        except:
+            max_tid = 0
         
         while True:
             try:
@@ -39,8 +39,10 @@ class MtGoxWorker(threading.Thread):
                 
                 if result['result'] == 'success':
                     if len(result['return']) == 0:
+                        print('Error')
                         time.sleep(120)
                     else:
+                        print('OK')
                         cursor = db.cursor()
                         
                         for trade in result['return']:
@@ -85,6 +87,3 @@ for currency in currencies:
     workers.append(w)
     
     time.sleep(10)
-
-while True:
-    time.sleep(2)

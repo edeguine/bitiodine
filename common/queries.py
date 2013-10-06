@@ -19,6 +19,13 @@ out_query_addr_with_value = """
 			  LEFT JOIN txin ON (txin.txout_id = txout.txout_id)
 			 WHERE txout.tx_id = ?
 """
+time_query = """
+	  SELECT
+			  time
+			  FROM tx
+			  LEFT JOIN blocks ON (tx.block_id = blocks.block_id)
+			 WHERE tx.tx_id = ?
+"""
 
 number_of_transactions_address_so_far_query = "SELECT COUNT(*) FROM txout TOUT JOIN txin TI ON TOUT.tx_id = TI.tx_id WHERE TOUT.tx_id < ? AND TOUT.address = ?"
 used_so_far_query = "SELECT EXISTS(SELECT * FROM txout TOUT JOIN txin TI ON TOUT.tx_id = TI.tx_id WHERE TOUT.tx_id < ? AND TOUT.address = ?)"

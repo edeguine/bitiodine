@@ -5,13 +5,13 @@ from queries import *
 class Features:
 
 	features = ['mining', 'gambling', 'exchanges', 'wallets', 'bitcointalk', 'bitcoinotc', 'freebies', 'donations']
-	labels = ['OTA', 'OLD', 'NEW', 'EMPTY', 'EXHAUSTED', 'RECENTLY_ACTIVE', 'ZOMBIE', 'SCAMMER', 'DISPOSABLE', 'MINER']
+	labels = ['OTA', 'OLD', 'NEW', 'EMPTY', 'EXHAUSTED', 'RECENTLY_ACTIVE', 'ZOMBIE', 'SCAMMER', 'DISPOSABLE', 'MINER', 'SHAREHOLDER', 'CASASCIUS']
 	labels_string = ['BITCOINTALK_USER', 'BITCOINOTC_USER']
 
 	_data = {}
 
 	def __init__(self):
-		for feature in self.features:
+		for feature in self.features + ['scammers', 'shareholders', 'casascius']:
 			self._data[feature] = self.readFile(feature + '.csv')
 
 	def readFile(self, filename):
@@ -34,6 +34,9 @@ class Features:
 				return [x for x in self._data[feature]]
 		except KeyError:
 			return []
+
+	def isInList(self, address, label):
+		return address in self._data[label]
 
 	def queryCSV(self, feature, address):
 		filename = 'Lists/' + feature + '.csv'
