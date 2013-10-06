@@ -85,7 +85,14 @@ for tx_id in range(min_txid, max_txid_res + 1):
     except:
       continue
 
-    # If unable to detect shadow address, add all addresses as recipients
+    # If more than two otputs, unable to detect shadow address, add all addresses as recipients
+    try:
+      if len(out_res) > 2:
+        for out in out_res:
+          value[out[0]] = float(out[1]) * 10**-8
+    except:
+      continue
+
     for r in value:
       G.add_node(r)
 
