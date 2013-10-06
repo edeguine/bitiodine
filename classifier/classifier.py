@@ -192,6 +192,7 @@ for address in addresses:
 	features['SHAREHOLDER'] = f.isInList(address, 'shareholders')
 	features['CASASCIUS'] = f.isInList(address, 'casascius')
 	features['FBI'] = f.isInList(address, 'FBI')
+	features['SILKROAD'] = f.isInList(address, 'silkroad')
 
 	# String labels
 	features['BITCOINTALK_USER'] = f.queryCSV('bitcointalk', address)
@@ -225,6 +226,12 @@ if options.cluster is not None:
 		for feature in scores + labels:
 			n_features = len(t[feature]) if len(t[feature]) > 0 else 1
 			t[feature] = sum(t[feature]) / n_features
+
+			# Priority labels for clusters (1 if at least one address in the cluster has the label)
+			if feature in ['SCAMMER', 'CASASCIUS', 'FBI', 'SILKROAD']:
+				if sum(t[feature]) > 0:
+					t[feature] = 1
+
 			if t[feature] < 1e-4:
 				t[feature] = 0
 
