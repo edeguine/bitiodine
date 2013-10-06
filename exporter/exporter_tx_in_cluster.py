@@ -11,7 +11,7 @@ except:
 
 # Config
 # Cluster number
-cluster_n = 11259
+cluster_n = int(argv[2])
 
 with open(f, "rb") as infile:
 	G = pickle.load(infile)
