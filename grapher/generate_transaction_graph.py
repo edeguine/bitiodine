@@ -32,7 +32,7 @@ for tx_id in range(min_txid, max_txid_res + 1):
   if tx_id % 1000000 == 0:
     print("TRANSACTION ID: %d" % (tx_id))
     save(G, FILENAME, tx_id)
-    print(nx.number_of_nodes(G), "nodes,", nx.number_of_edges(G), "edges so far.")
+    print("%d nodes, %d edges so far." % (nx.number_of_nodes(G),nx.number_of_edges(G)))
 
   try:
     in_res = db.query(in_query_addr, (tx_id,))
