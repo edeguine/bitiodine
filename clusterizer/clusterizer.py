@@ -130,6 +130,13 @@ if options.load:
 		die(e)
 
 	counter = Counter(users.values())
+	top10 = counter.most_common(10)
+
+	print("Top clusters:")
+	print("Cluster ID\t\t\t\tSize")
+	for candidate, size in top10:
+		print("%d\t\t\t\t%d" % (candidate, size))
+	print()
 	lengths = list(counter.values())
 
 	users_no_singletons = stripSingletons(users)
