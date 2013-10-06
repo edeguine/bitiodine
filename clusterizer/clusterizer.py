@@ -133,7 +133,7 @@ if options.load:
 	top10 = counter.most_common(10)
 
 	print("Top clusters:")
-	print("Cluster ID\t\t\t\tSize")
+	print("Cluster ID\t\t\tSize")
 	for candidate, size in top10:
 		print("%d\t\t\t\t%d" % (candidate, size))
 	print()
