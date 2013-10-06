@@ -104,9 +104,10 @@ if options.generate:
 			except Exception as e:
 				die(e)
 
-			if appeared1_res == 0 and time_res < FIX_TIME:
+			if appeared1_res == 0 and (time_res < FIX_TIME or appeared2_res == 1):
 				# Address 1 is never used and appeared, likely a shadow address, add to previous group
-				# Exploits bitcoin client bug
+				# Exploits bitcoin client bug in case time_res < FIX_TIME or
+				# is deterministic in case appeared2_res == 1
 				# 
 				# Fixed on Jan 30, 2013 on Git repo
 				# https://github.com/bitcoin/bitcoin/commit/ac7b8ea0864e925b0f5cf487be9acdf4a5d0c487#diff-d7618bdc04db23aa74d6a5a4198c58fd
@@ -114,9 +115,6 @@ if options.generate:
 				# Next release: 0.8.0 on 18 Feb 2013
 				# 
 				# so only applies to transactions happened before 18 Feb 2013 (UNIX TIMESTAMP - FIX_TIME: 1329523200)
-				users[address1] = found
-			elif appeared1_res == 0 and appeared2_res == 1:
-				# This is deterministic - first address is actually a shadow address
 				users[address1] = found
 
 			if appeared2_res == 0 and appeared1_res == 1:
