@@ -191,6 +191,7 @@ for address in addresses:
 	features['SCAMMER'] = f.isInList(address, 'scammers')
 	features['SHAREHOLDER'] = f.isInList(address, 'shareholders')
 	features['CASASCIUS'] = f.isInList(address, 'casascius')
+	features['FBI'] = f.isInList(address, 'FBI')
 
 	# String labels
 	features['BITCOINTALK_USER'] = f.queryCSV('bitcointalk', address)
