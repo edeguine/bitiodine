@@ -49,47 +49,59 @@ for tx_id in range(min_txid, max_txid_res + 1):
   # IN
   addresses = []
   for line in in_res:
-      address = line[0]
-      if address is not None:
-      	addresses.append(address)
-      else:
-        addresses.append("GENERATED")
+    address = line[0]
+    value = {}
+    if address is not None:
+    	addresses.append(address)
+    else:
+      addresses.append("GENERATED")
 
-  # OUT
-  # One output transaction case
-  try:
-	  if len(out_res) == 1:
-	  	dest_addr = out_res[0][0]
-	  	tx_value = float(out_res[0][1]) * 10**-8
-  except:
-  	continue
-
-  # If two outputs, real recipient is the second
-  # Exploit bitcoin client bug - "change never last output"
-  # https://bitcointalk.org/index.php?topic=128042.msg1398752#msg1398752
-  # https://bitcointalk.org/index.php?topic=136289.msg1451700#msg1451700
-  try:
-	  if len(out_res) == 2:
-	  	dest_addr = out_res[1][0]
-	  	tx_value = float(out_res[1][1]) * 10**-8
-  except:
-  	continue
-
-  if dest_addr is not None:
-    G.add_node(dest_addr)
-  else:
-  	continue
-
-  for address in addresses:
-	  # Update edges
+    # OUT
+    # One output transaction case
     try:
-      number_of_transactions = G.edge[address][dest_addr]['number_of_transactions']
+      if len(out_res) == 1:
+      	value[out_res[0][0]] = float(out_res[0][1]) * 10**-8
     except:
-      number_of_transactions = 0
+      continue
 
-    G.add_node(address)
-    G.add_edge(address, dest_addr, number_of_transactions=number_of_transactions+1)
+    # If two outputs, try to predict real recipient
+    try:
+      if len(out_res) == 2:
 
-  G.node[dest_addr]['amount_received'] = G.node[dest_addr].get('amount_received', 0) + tx_value
+        address1 = out_res[0][0]
+        address2 = out_res[1][0]
+
+        try:
+          appeared1_res = db.query(used_so_far_query, (tx_id, address1), fetch_one=True)
+          appeared2_res = db.query(used_so_far_query, (tx_id, address2), fetch_one=True)
+          time_res = db.query(time_query, (tx_id,), fetch_one=True)
+        except Exception as e:
+          die(e)
+
+        if appeared1_res == 0 and (time_res < FIX_TIME or appeared2_res == 1):
+      	  value[address1] = float(out_res[0][1]) * 10**-8
+        elif appeared2_res == 0 and appeared1_res == 1:
+          value[address2] = float(out_res[1][1]) * 10**-8
+    except:
+      continue
+
+    # If unable to detect shadow address, add all addresses as recipients
+    for r in value:
+      G.add_node(r)
+
+    for address in addresses:
+      # Update edges
+      number_of_transactions = {}
+      try:
+        for r in value:
+          number_of_transactions[r] = G.edge[address][r]['number_of_transactions']
+      except:
+        pass
+
+      G.add_node(address)
+
+      for r in value:
+        G.add_edge(address, r, number_of_transactions=number_of_transactions.get(r, 0)+1)
+        G.node[r]['amount_received'] = G.node[r].get('amount_received', 0) + value[r]
 
 save(G, FILENAME, tx_id)
