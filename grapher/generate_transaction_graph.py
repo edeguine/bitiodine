@@ -54,7 +54,7 @@ for tx_id in range(min_txid, max_txid_res + 1):
     # OUT
     # One output transaction case
     try:
-      if len(out_res) == 1:
+      if len(out_res) == 1 and out_res[0][0] != address:
       	value[out_res[0][0]] = float(out_res[0][1]) * 10**-8
     except:
       continue
@@ -73,9 +73,9 @@ for tx_id in range(min_txid, max_txid_res + 1):
         except Exception as e:
           die(e)
 
-        if appeared1_res == 0 and (time_res < FIX_TIME or appeared2_res == 1):
+        if appeared1_res == 0 and (time_res < FIX_TIME or appeared2_res == 1) and address1 != address:
       	  value[address1] = float(out_res[0][1]) * 10**-8
-        elif appeared2_res == 0 and appeared1_res == 1:
+        elif appeared2_res == 0 and appeared1_res == 1 and address2 != address:
           value[address2] = float(out_res[1][1]) * 10**-8
     except:
       continue
@@ -84,7 +84,8 @@ for tx_id in range(min_txid, max_txid_res + 1):
     try:
       if len(out_res) > 2:
         for out in out_res:
-          value[out[0]] = float(out[1]) * 10**-8
+          if out[0] != address:
+            value[out[0]] = float(out[1]) * 10**-8
     except:
       continue
 
