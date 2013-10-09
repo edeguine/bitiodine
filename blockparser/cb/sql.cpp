@@ -147,6 +147,7 @@ struct SQLDump:public Callback
             "CREATE INDEX x_txout_address ON txout (address);\n"
             "CREATE INDEX x_txin_txid ON txin (tx_id);\n"
             "CREATE INDEX x_txout_txid ON txout (tx_id);\n"
+            "CREATE INDEX x_tx_txid ON tx (tx_id);\n"
             "\n"
         );
         fclose(sqlFile);
