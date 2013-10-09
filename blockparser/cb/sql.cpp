@@ -228,7 +228,7 @@ struct SQLDump:public Callback
         // tx_id BIGINT PRIMARY KEY
         // tx_hash BINARY(32)
         // block_id BIGINT
-        fprintf(txFile, "%" PRIu64 "|", txID++);
+        fprintf(txFile, "%" PRIu64 "|", ++txID);
 
         writeEscapedBinaryBuffer(txFile, hash, kSHA256ByteSize);
         fputc('|', txFile);
