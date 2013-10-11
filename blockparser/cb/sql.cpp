@@ -150,8 +150,7 @@ struct SQLDump:public Callback
             "CREATE INDEX x_tx_txid ON tx (tx_id);\n"
             "CREATE INDEX x_txout_value ON txout(txout_value);\n"
             "CREATE INDEX x_blocks_id ON blocks(block_id);\n"
-            "CREATE VIEW tx_full AS SELECT blocks.time, tx.tx_hash, txout.address, txout.txout_value FROM txout LEFT JOIN tx ON (tx.tx_id = txout.tx_id) LEFT JOIN blocks ON (tx.block_id = blocks.block_id) WHERE blocks.time BETWEEN 1364740000 AND 1364747000 AND txout.txout_value = 167000000000;
-\n"
+            "CREATE VIEW tx_full AS SELECT blocks.time, tx.tx_hash, txout.address, txout.txout_value FROM txout LEFT JOIN tx ON (tx.tx_id = txout.tx_id) LEFT JOIN blocks ON (tx.block_id = blocks.block_id) WHERE blocks.time BETWEEN 1364740000 AND 1364747000 AND txout.txout_value = 167000000000;\n"
             "\n"
         );
         fclose(sqlFile);
