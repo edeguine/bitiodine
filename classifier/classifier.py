@@ -124,9 +124,14 @@ for address in addresses:
 	if first_seen is None and in_addresses is None and out_addresses is None:
 		features['BITCOINTALK_USER'] = f.queryCSV('bitcointalk', address)
 		features['BITCOINOTC_USER'] = f.queryCSV('bitcoinotc', address)
+		features['SCAMMER'] = f.isInList(address, 'scammers')
+		features['SHAREHOLDER'] = f.isInList(address, 'shareholders')
+		features['CASASCIUS'] = f.isInList(address, 'casascius')
+		features['FBI'] = f.isInList(address, 'FBI')
+		features['SILKROAD'] = f.isInList(address, 'silkroad')
 
 		try:
-			db.query(features_update_partial_query, [features['BITCOINTALK_USER'], features['BITCOINOTC_USER'], cluster_id, address])
+			db.query(features_update_partial_query, [features['BITCOINTALK_USER'], features['BITCOINOTC_USER'], features['SCAMMER'], features['SHAREHOLDER'], features['CASASCIUS'], features['FBI'], features['SILKROAD'], cluster_id, address])
 		except:
 			pass
 
