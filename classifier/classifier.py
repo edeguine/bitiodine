@@ -137,7 +137,6 @@ for address in addresses:
 
 		if options.cluster is not None or options.all_clusters is not None:
 			features = f.queryDB(db, address)
-			pprint(features)
 			features_all[cluster_id].append(features)
 
 		continue
@@ -237,7 +236,7 @@ if options.cluster is not None:
 				if sum(t[feature]) > 0:
 					t[feature] = 1
 
-			if t[feature] < 1e-4:
+			if t[feature] < 1e-6:
 				t[feature] = 0
 
 		for feature in labels_string:

@@ -1,20 +1,9 @@
 #!/usr/bin/env python3
 
-from hashlib import sha256
+from bitcoin_functions import *
 from sys import exit
 import urllib.request, urllib.error
 import csv, re, os
-
-def decode_base58(bc, length):
-	CHARSET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
-	n = 0
-	for char in bc:
-		n = n * 58 + CHARSET.index(char)
-	return n.to_bytes(length, 'big')
-
-def isBTCAddress(address):
-	bcbytes = decode_base58(address, 25)
-	return bcbytes[-4:] == sha256(sha256(bcbytes[:-4]).digest()).digest()[:4]
 
 try:
 	html = urllib.request.urlopen('http://blockchain.info/tags?filter=4').read().decode('utf-8')
