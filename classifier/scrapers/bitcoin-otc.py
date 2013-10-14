@@ -13,7 +13,7 @@ except urllib.error.URLError as e:
 
 results = re.findall(r"<span class=\"tag\" id=\"(\b1[123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz]{20,40}\b)\">([^\"]+)</span>", html)
 
-with open('../Lists/bitcoin-otc.csv', 'a') as f:
+with open('../Lists/bitcoinotc.csv', 'a') as f:
 	writer = csv.writer(f)
 
 	for result in results:
@@ -25,6 +25,6 @@ with open('../Lists/bitcoin-otc.csv', 'a') as f:
 
 		writer.writerow([address, username])
 
-os.system("cp ../Lists/bitcoin-otc.csv /tmp/temp-bitcoin-otc.csv")
-os.system("cat /tmp/temp-bitcoin-otc.csv | sort | uniq > ../Lists/bitcoin-otc.csv")
+os.system("cp ../Lists/bitcoinotc.csv /tmp/temp-bitcoinotc.csv")
+os.system("cat /tmp/temp-bitcoin-otc.csv | sort | uniq > ../Lists/bitcoinotc.csv")
 os.system("rm -f /tmp/temp-bitcoin-otc.csv")
