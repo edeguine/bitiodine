@@ -17,7 +17,6 @@ with open('../Lists/bitcoin-otc.csv', 'a') as f:
 	writer = csv.writer(f)
 
 	for result in results:
-
 		address, username = result
 		print("Adding user %s with address %s..." % (username, address))
 
