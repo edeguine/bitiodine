@@ -5,7 +5,7 @@ from queries import *
 class Features:
 
 	features = ['mining', 'gambling', 'exchanges', 'wallets', 'bitcointalk', 'bitcoinotc', 'freebies', 'donations']
-	labels = ['OTA', 'OLD', 'NEW', 'EMPTY', 'EXHAUSTED', 'RECENTLY_ACTIVE', 'ZOMBIE', 'SCAMMER', 'DISPOSABLE', 'MINER', 'SHAREHOLDER', 'CASASCIUS', 'FBI', 'SILKROAD']
+	labels = ['OTA', 'OLD', 'NEW', 'EMPTY', 'EXHAUSTED', 'RECENTLY_ACTIVE', 'ZOMBIE', 'SCAMMER', 'DISPOSABLE', 'MINER', 'SHAREHOLDER', 'CASASCIUS', 'FBI', 'SILKROAD', 'KILLER']
 	labels_string = ['BITCOINTALK_USER', 'BITCOINOTC_USER']
 
 	_data = {}
