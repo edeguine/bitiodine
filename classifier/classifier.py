@@ -132,7 +132,7 @@ for address in addresses:
 		features['KILLER'] = f.isInList(address, 'killers')
 
 		try:
-			db.query(features_update_partial_query, [features['BITCOINTALK_USER'], features['BITCOINOTC_USER'], features['SCAMMER'], features['SHAREHOLDER'], features['CASASCIUS'], features['FBI'], features['SILKROAD'], cluster_id, address])
+			db.query(features_update_partial_query, [features['BITCOINTALK_USER'], features['BITCOINOTC_USER'], features['SCAMMER'], features['SHAREHOLDER'], features['CASASCIUS'], features['FBI'], features['SILKROAD'], features['KILLER'], cluster_id, address])
 		except:
 			pass
 
