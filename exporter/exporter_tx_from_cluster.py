@@ -33,8 +33,13 @@ nodes, edges = set(), []
 with open(str(cluster_n) + ".dot", 'w') as f:
 	f.write('digraph G {\n');
 
+	# Look for fixed point
+	for address in addresses[:]:
+		addresses += [successor for successor in G.successors(address)]
+
+	print("%d addresses loaded." % len(addresses))
+
 	for u, v, d in G.edges_iter(data=True):
-		#if (u not in addresses or v not in addresses):
 		if (u not in addresses and v not in addresses):
 			continue
 
@@ -48,6 +53,7 @@ with open(str(cluster_n) + ".dot", 'w') as f:
 	print("Generating a DOT file...")
 
 	nodes = sorted(list(nodes))
+	gc.collect()
 
 	for n in nodes:
 		recv = str(int(G.node[n].get('amount_received', 0)))
