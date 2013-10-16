@@ -33,8 +33,10 @@ nodes, edges = set(), []
 with open(str(cluster_n) + ".dot", 'w') as f:
 	f.write('digraph G {\n');
 
+	addr_list = list(addresses)
+
 	# Look for fixed point
-	for address in addresses[:]:
+	for address in addr_list:
 		addresses |= set([successor for successor in G.successors(address)])
 
 	print("%d addresses loaded." % len(addresses))
