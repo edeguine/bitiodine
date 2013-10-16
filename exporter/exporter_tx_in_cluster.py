@@ -23,6 +23,7 @@ for address, cluster in users.items():
 	if cluster == cluster_n:
 		addresses.add(address)
 print("%d addresses loaded." % len(addresses))
+del users
 
 nodes, edges = set(), []
 
