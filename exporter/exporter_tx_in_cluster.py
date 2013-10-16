@@ -4,16 +4,11 @@ import pickle
 
 from sys import argv
 
-try:
-	f = argv[1]
-except:
-	f = '../grapher/tx_graph.dat'
-
 # Config
 # Cluster number
-cluster_n = int(argv[2])
+cluster_n = int(argv[1])
 
-with open(f, "rb") as infile:
+with open('../grapher/tx_graph.dat', "rb") as infile:
 	G = pickle.load(infile)
 
 print("Graph loaded.")
