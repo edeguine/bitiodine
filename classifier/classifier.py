@@ -129,6 +129,7 @@ for address in addresses:
 		features['CASASCIUS'] = f.isInList(address, 'casascius')
 		features['FBI'] = f.isInList(address, 'FBI')
 		features['SILKROAD'] = f.isInList(address, 'silkroad')
+		features['KILLER'] = f.isInList(address, 'killers')
 
 		try:
 			db.query(features_update_partial_query, [features['BITCOINTALK_USER'], features['BITCOINOTC_USER'], features['SCAMMER'], features['SHAREHOLDER'], features['CASASCIUS'], features['FBI'], features['SILKROAD'], cluster_id, address])
@@ -197,6 +198,7 @@ for address in addresses:
 	features['CASASCIUS'] = f.isInList(address, 'casascius')
 	features['FBI'] = f.isInList(address, 'FBI')
 	features['SILKROAD'] = f.isInList(address, 'silkroad')
+	features['KILLER'] = f.isInList(address, 'killers')
 
 	# String labels
 	features['BITCOINTALK_USER'] = f.queryCSV('bitcointalk', address)
@@ -232,7 +234,7 @@ if options.cluster is not None:
 			t[feature] = sum(t[feature]) / n_features
 
 			# Priority labels for clusters (1 if at least one address in the cluster has the label)
-			if feature in ['SCAMMER', 'FBI', 'SILKROAD']:
+			if feature in ['SCAMMER', 'FBI', 'SILKROAD', 'KILLER']:
 				if sum(t[feature]) > 0:
 					t[feature] = 1
 
