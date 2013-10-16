@@ -235,7 +235,7 @@ if options.cluster is not None:
 
 			# Priority labels for clusters (1 if at least one address in the cluster has the label)
 			if feature in ['SCAMMER', 'FBI', 'SILKROAD', 'KILLER']:
-				if sum(t[feature]) > 0:
+				if t[feature] > 0:
 					t[feature] = 1
 
 			if t[feature] < 1e-6:
