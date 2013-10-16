@@ -37,7 +37,10 @@ with open(str(cluster_n) + ".dot", 'w') as f:
 
 	# Look for fixed point
 	for address in addr_list:
-		addresses |= set([successor for successor in G.successors(address)])
+		try:
+			addresses |= set([successor for successor in G.successors(address)])
+		except:
+			pass
 
 	print("%d addresses loaded." % len(addresses))
 
