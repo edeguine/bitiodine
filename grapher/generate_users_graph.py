@@ -46,16 +46,12 @@ for tx_id in range(min_txid, max_txid_res + 1):
 
   try:
     in_res = db.query(in_query_addr, (tx_id,))
-    out_res = db.query(out_query_addr_with_value, (tx_id,))
+    out_res = db.query(out_query_addr, (tx_id,))
   except:
     # Just go to the next transaction
     continue
 
-  # Pre-test: if more than two outputs, we can't say which is the real recipient.
-  # So, skip. (Very very few transactions skipped)
-  if len(out_res) > 2:
-    continue
-
+  in_addr, out_addr = set(), set()
   source = None
   # IN
   for line in in_res:
@@ -70,49 +66,31 @@ for tx_id in range(min_txid, max_txid_res + 1):
     continue
 
   if source is None:
-    source = address
+    in_addr = set([line[0] for line in in_res])
     source_is_addr = True
+  else:
+    in_addr.add(str(source))
 
   # OUT
-  # One output transaction case
-  try:
-    if len(out_res) == 1:
-      dest_addr = out_res[0][0]
-      tx_value = float(out_res[0][1]) * 10**-8
-  except:
-    continue
+  for out in out_res:
+    out_address = out[0]
+    if out_address is not None:
+      dest = users.get(dest_addr)
 
-  # If two outputs, real recipient is the second
-  # Exploit bitcoin client bug - "change never last output"
-  # https://bitcointalk.org/index.php?topic=128042.msg1398752#msg1398752
-  # https://bitcointalk.org/index.php?topic=136289.msg1451700#msg1451700
-  try:
-    if len(out_res) == 2:
-      dest_addr = out_res[1][0]
-      tx_value = float(out_res[1][1]) * 10**-8
-  except:
-    continue
+      if dest is None:
+        dest = dest_addr
+        dest_is_addr = True
 
-  if dest_addr is not None:
-    dest = users.get(dest_addr)
+      out_addr.add(out_address)
 
-    if dest is None:
-      dest = dest_addr
-      dest_is_addr = True
+  for in_address in in_addr:
+    G.add_node(in_address)
 
-    # Ignore source -> dest if both are not clustered
-    # if source_is_addr and dest_is_addr:
-    #   continue
-    G.add_node(dest)
-  else:
-    continue
+  for out_address in out_addr:
+    G.add_node(out_address)
 
-  try:
-      number_of_transactions = G.edge[source][dest]['number_of_transactions']
-  except:
-      number_of_transactions = 0
-
-  G.add_edge(str(source), str(dest), number_of_transactions=number_of_transactions+1)
-  G.node[str(dest)]['amount_received'] = G.node[dest].get('amount_received', 0) + tx_value
+  for in_address in in_addr:
+    for out_address in out_addr:
+      G.add_edge(in_address, out_address)
 
 save(G, FILENAME, tx_id)

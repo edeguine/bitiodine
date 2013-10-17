@@ -36,75 +36,35 @@ for tx_id in range(min_txid, max_txid_res + 1):
 
   try:
     in_res = db.query(in_query_addr, (tx_id,))
-    out_res = db.query(out_query_addr_with_value, (tx_id,))
-  except:
+    out_res = db.query(out_query_addr, (tx_id,))
+  except Exception as e:
+    print(e)
     # Just go to the next transaction
     continue
 
   # IN
-  addresses = []
+  in_addr = set()
+  out_addr = set()
   for line in in_res:
     address = line[0]
-    value = {}
     if address is not None:
-    	addresses.append(address)
+    	in_addr.add(address)
     else:
-      addresses.append("GENERATED")
+      in_addr.add("GENERATED")
 
-    # OUT
-    # One output transaction case
-    try:
-      if len(out_res) == 1 and out_res[0][0] != address:
-      	value[out_res[0][0]] = float(out_res[0][1]) * 10**-8
-    except:
-      continue
+  # OUT  
+  for out in out_res:
+    if out[0] not in in_addr:
+      out_addr.add(out[0])
 
-    # If two outputs, try to predict real recipient
-    try:
-      if len(out_res) == 2:
+  for in_address in in_addr:
+    G.add_node(in_address)
 
-        address1 = out_res[0][0]
-        address2 = out_res[1][0]
+  for out_address in out_addr:
+    G.add_node(out_address)
 
-        try:
-          appeared1_res = db.query(used_so_far_query, (tx_id, address1), fetch_one=True)
-          appeared2_res = db.query(used_so_far_query, (tx_id, address2), fetch_one=True)
-          time_res = db.query(time_query, (tx_id,), fetch_one=True)
-        except Exception as e:
-          die(e)
-
-        if appeared1_res == 0 and (time_res < FIX_TIME or appeared2_res == 1) and address1 != address:
-      	  value[address1] = float(out_res[0][1]) * 10**-8
-        elif appeared2_res == 0 and appeared1_res == 1 and address2 != address:
-          value[address2] = float(out_res[1][1]) * 10**-8
-    except:
-      continue
-
-    # If more than two otputs, unable to detect shadow address, add all addresses as recipients
-    try:
-      if len(out_res) > 2:
-        for out in out_res:
-          if out[0] != address:
-            value[out[0]] = float(out[1]) * 10**-8
-    except:
-      continue
-
-    for r in value:
-      G.add_node(r)
-
-    for address in addresses:
-      # Update edges
-      number_of_transactions = {}
-      try:
-        for r in value:
-          number_of_transactions[r] = G.edge[address][r]['number_of_transactions']
-      except:
-        pass
-
-      G.add_node(address)
-
-      for r in value:
-        G.add_edge(address, r, number_of_transactions=number_of_transactions.get(r, 0)+1)
-        G.node[r]['amount_received'] = G.node[r].get('amount_received', 0) + value[r]
+  for in_address in in_addr:
+    for out_address in out_addr:
+      G.add_edge(in_address, out_address)
 
 save(G, FILENAME, tx_id)

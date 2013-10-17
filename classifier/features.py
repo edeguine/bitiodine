@@ -11,7 +11,7 @@ class Features:
 	_data = {}
 
 	def __init__(self):
-		for feature in self.features + ['scammers', 'shareholders', 'casascius', 'FBI', 'silkroad']:
+		for feature in self.features + ['scammers', 'shareholders', 'casascius', 'FBI', 'silkroad', 'killers']:
 			self._data[feature] = self.readFile(feature + '.csv')
 
 	def readFile(self, filename):

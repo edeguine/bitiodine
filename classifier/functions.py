@@ -113,10 +113,10 @@ def getAddressInfo(address, G, db, max_block, verbose=False):
 		# Get from DB (Graph)
 		if address in G:
 			for successor in G.successors(address):
-				out_addresses.extend([successor] * G.edge[address][successor]['number_of_transactions'])
+				out_addresses.extend([successor])
 
 			for predecessor in G.predecessors(address):
-				in_addresses.extend([predecessor] * G.edge[predecessor][address]['number_of_transactions'])
+				in_addresses.extend([predecessor])
 
 		print("Done.")
 			
