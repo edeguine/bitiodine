@@ -33,16 +33,14 @@ nodes, edges = set(), []
 with open(str(cluster_n) + ".dot", 'w') as f:
 	f.write('digraph G {\n');
 
-	for u, v, d in G.edges_iter(data=True):
+	for u, v in G.edges_iter():
 		#if (u not in addresses or v not in addresses):
 		if (u not in addresses and v not in addresses):
 			continue
 
-		n_of_tx = d['number_of_transactions']
-
 		nodes.add(u)
 		nodes.add(v)
-		edges.append((u, v, n_of_tx))
+		edges.append((u, v))
 
 	print("Filtering results: %d nodes and %d edges." % (len(nodes), len(edges)))
 	print("Generating a DOT file...")
@@ -50,15 +48,14 @@ with open(str(cluster_n) + ".dot", 'w') as f:
 	nodes = sorted(list(nodes))
 
 	for n in nodes:
-		recv = str(int(G.node[n].get('amount_received', 0)))
-		f.write('"%s" [recv=%s];\n' % (n, recv))
+		f.write('"%s";\n' % (n))
 
 	f.write('\n')
 	f.flush()
 
 	for edge in edges:
-		(u, v, n_of_tx) = edge
-		f.write('"%s" -> "%s" [weight=%s];\n' % (u, v, str(n_of_tx)))
+		(u, v) = edge
+		f.write('"%s" -> "%s";\n' % (u, v)))
 
 	f.write('};\n')
 	f.flush()
