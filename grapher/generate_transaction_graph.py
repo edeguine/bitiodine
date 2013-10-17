@@ -21,15 +21,15 @@ min_txid = 1
 
 try:
   G, min_txid = load(FILENAME)
-except:
-  pass
+except Exception as e:
+  print(e)
 
 print("Scanning %d transactions, starting from %d." %(max_txid_res, min_txid))
 
 for tx_id in range(min_txid, max_txid_res + 1):
 
   # Save progress to files
-  if tx_id % 500000 == 0:
+  if tx_id % 1000000 == 0:
     print("TRANSACTION ID: %d" % (tx_id))
     save(G, FILENAME, tx_id)
     print("%d nodes, %d edges so far." % (nx.number_of_nodes(G),nx.number_of_edges(G)))
