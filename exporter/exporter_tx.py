@@ -32,13 +32,13 @@ nodes, edges = set(), []
 with open(f + ".dot", 'w') as f:
 	f.write('digraph G {\n');
 
-	for u, v in G.edges_iter():
+	for u, v, d in G.edges_iter(data=True):
 
 		if filter_dot and (G.out_degree(u) < threshold_out_degree_src or G.in_degree(v) < threshold_in_degree_dst):
 			continue
 		nodes.add(u)
 		nodes.add(v)
-		edges.append((u, v))
+		edges.append((u, v, d))
 
 	print("Filtering results: %d nodes and %d edges." % (len(nodes), len(edges)))
 	print("Generating a DOT file...")
@@ -52,7 +52,7 @@ with open(f + ".dot", 'w') as f:
 	f.write('\n')
 
 	for edge in edges:
-		(u, v) = edge
-		f.write('"%s" -> "%s";\n' % (u, v))
+		(u, v, d) = edge
+		f.write('"%s" -> "%s" [tx_hash=%s];\n' % (u, v, d['tx_hash']))
 
 	f.write('};\n')

@@ -12,6 +12,12 @@ out_query_addr = """
 			  LEFT JOIN txin ON (txin.txout_id = txout.txout_id)
 			 WHERE txout.tx_id = ?
 """
+tx_hash_query = """
+	  SELECT
+			  tx_hash
+			  FROM tx
+			  WHERE tx_id = ?
+"""
 out_query_addr_with_value = """
 	  SELECT
 			  txout.address, txout.txout_value

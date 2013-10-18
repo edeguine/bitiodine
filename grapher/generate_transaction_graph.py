@@ -37,6 +37,7 @@ for tx_id in range(min_txid, max_txid_res + 1):
   try:
     in_res = db.query(in_query_addr, (tx_id,))
     out_res = db.query(out_query_addr, (tx_id,))
+    tx_hash = db.query(tx_hash_query, (tx_id,), fetch_one=True)
   except Exception as e:
     print(e)
     # Just go to the next transaction
@@ -65,6 +66,6 @@ for tx_id in range(min_txid, max_txid_res + 1):
 
   for in_address in in_addr:
     for out_address in out_addr:
-      G.add_edge(in_address, out_address)
+      G.add_edge(in_address, out_address, tx_hash=tx_hash)
 
 save(G, FILENAME, tx_id)
