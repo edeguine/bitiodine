@@ -155,7 +155,7 @@ struct SQLDump:public Callback
         );
         fclose(sqlFile);
 
-        FILE *bashFile = fopen("blockChain.bash", "w");
+        FILE *bashFile = fopen("blockChain.sh", "w");
         if(!bashFile) sysErrFatal("couldn't open file blockChain.bash for writing\n");
 
         fprintf(
@@ -179,7 +179,7 @@ struct SQLDump:public Callback
             "    echo\n"
             "done\n"
             "mv -f ../blockchain/blockchain2.sqlite ../blockchain/blockchain.sqlite\n"
-            "rm -f blockChain.bash\n"
+            "rm -f blockChain.sh\n"
             "\n"
         );
         fclose(bashFile);
@@ -332,10 +332,10 @@ struct SQLDump:public Callback
         fclose(inputFile);
         fclose(blockFile);
         fclose(txFile);
-        int ret = system("sh blockChain.bash");
-        // if (!ret) {
-        //     info("Error in executing script!");
-        // }
+        int ret = system("./blockChain.sh");
+        if (!ret) {
+            info("Error in executing script!");
+        }
         info("done\n");
         exit(0);
     }
