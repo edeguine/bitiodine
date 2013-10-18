@@ -156,7 +156,7 @@ struct SQLDump:public Callback
         fclose(sqlFile);
 
         FILE *bashFile = fopen("blockChain.sh", "w");
-        if(!bashFile) sysErrFatal("couldn't open file blockChain.bash for writing\n");
+        if(!bashFile) sysErrFatal("couldn't open file blockChain.sh for writing\n");
 
         fprintf(
             bashFile,
