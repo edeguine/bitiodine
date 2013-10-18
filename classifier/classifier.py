@@ -130,9 +130,10 @@ for address in addresses:
 		features['FBI'] = f.isInList(address, 'FBI')
 		features['SILKROAD'] = f.isInList(address, 'silkroad')
 		features['KILLER'] = f.isInList(address, 'killers')
+		features['MALWARE'] = f.isInList(address, 'malware')
 
 		try:
-			db.query(features_update_partial_query, [features['BITCOINTALK_USER'], features['BITCOINOTC_USER'], features['SCAMMER'], features['SHAREHOLDER'], features['CASASCIUS'], features['FBI'], features['SILKROAD'], features['KILLER'], cluster_id, address])
+			db.query(features_update_partial_query, [features['BITCOINTALK_USER'], features['BITCOINOTC_USER'], features['SCAMMER'], features['SHAREHOLDER'], features['CASASCIUS'], features['FBI'], features['SILKROAD'], features['KILLER'], features['MALWARE'], cluster_id, address])
 		except:
 			pass
 
@@ -199,6 +200,7 @@ for address in addresses:
 	features['FBI'] = f.isInList(address, 'FBI')
 	features['SILKROAD'] = f.isInList(address, 'silkroad')
 	features['KILLER'] = f.isInList(address, 'killers')
+	features['MALWARE'] = f.isInList(address, 'malware')
 
 	# String labels
 	features['BITCOINTALK_USER'] = f.queryCSV('bitcointalk', address)

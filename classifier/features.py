@@ -5,13 +5,13 @@ from queries import *
 class Features:
 
 	features = ['mining', 'gambling', 'exchanges', 'wallets', 'bitcointalk', 'bitcoinotc', 'freebies', 'donations']
-	labels = ['OTA', 'OLD', 'NEW', 'EMPTY', 'EXHAUSTED', 'RECENTLY_ACTIVE', 'ZOMBIE', 'SCAMMER', 'DISPOSABLE', 'MINER', 'SHAREHOLDER', 'CASASCIUS', 'FBI', 'SILKROAD', 'KILLER']
+	labels = ['OTA', 'OLD', 'NEW', 'EMPTY', 'EXHAUSTED', 'RECENTLY_ACTIVE', 'ZOMBIE', 'SCAMMER', 'DISPOSABLE', 'MINER', 'SHAREHOLDER', 'CASASCIUS', 'FBI', 'SILKROAD', 'KILLER', 'MALWARE']
 	labels_string = ['BITCOINTALK_USER', 'BITCOINOTC_USER']
 
 	_data = {}
 
 	def __init__(self):
-		for feature in self.features + ['scammers', 'shareholders', 'casascius', 'FBI', 'silkroad', 'killers']:
+		for feature in self.features + ['scammers', 'shareholders', 'casascius', 'FBI', 'silkroad', 'killers', 'malware']:
 			self._data[feature] = self.readFile(feature + '.csv')
 
 	def readFile(self, filename):

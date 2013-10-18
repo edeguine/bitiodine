@@ -63,7 +63,7 @@ sent INT,
 n_tx INT,
 """
 
-features_update_partial_query = "UPDATE addresses SET BITCOINTALK_USER = ?, BITCOINOTC_USER = ?, SCAMMER = ?, SHAREHOLDER = ?, CASASCIUS = ?, FBI = ?, SILKROAD = ?, KILLER = ?, cluster_id = ? WHERE address = ?"
+features_update_partial_query = "UPDATE addresses SET BITCOINTALK_USER = ?, BITCOINOTC_USER = ?, SCAMMER = ?, SHAREHOLDER = ?, CASASCIUS = ?, FBI = ?, SILKROAD = ?, KILLER = ?, MALWARE = ?, cluster_id = ? WHERE address = ?"
 
 def update_features(n, table):
 	return "INSERT OR REPLACE INTO %s VALUES (" % table + '?,'*(n-1) + '?)'
