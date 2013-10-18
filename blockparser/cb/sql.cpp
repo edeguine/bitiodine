@@ -337,9 +337,9 @@ struct SQLDump:public Callback
         fclose(txFile);
         int ret = system("chmod +x ./blockChain.sh");
         ret = system("./blockChain.sh");
-        if (!ret) {
-            info("Error in executing script!");
-        }
+        // if (!ret) {
+        //     info("Error in executing script!");
+        // }
         info("done\n");
         exit(0);
     }
