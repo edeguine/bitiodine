@@ -114,6 +114,9 @@ struct SQLDump:public Callback
         fprintf(
             sqlFile,
             "PRAGMA page_size = 4096;\n"
+            "PRAGMA journal_mode=memory;\n"
+            "PRAGMA synchronous=0;\n"
+            "PRAGMA cache_size=500000;\n"
             "CREATE TABLE blocks(\n"
             "    block_id BIGINT NOT NULL PRIMARY KEY,\n"
             "    block_hash TEXT NOT NULL,\n"
