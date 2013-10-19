@@ -2,6 +2,7 @@
 import networkx as nx
 import pickle
 import gc
+from multiprocessing import Pool
 
 from sys import argv
 
@@ -9,6 +10,18 @@ from sys import argv
 # Cluster number
 cluster_n = int(argv[1])
 dest_addr = argv[2]
+# Number of processes
+N_PROCESSES = 10
+
+def find(addresses):
+	(address, dest_addr) = addresses
+	paths = list(nx.all_simple_paths(G, source=address, target=dest_addr))
+	print("Added %d new paths from address %s to address %s with min length %d." %(len(new_paths), address, dest_addr, min([len(x) for x in new_paths])))
+
+	if len(paths) > 0:
+		return paths
+	else:
+		return None
 
 with open("../clusterizer/clusters.dat", "rb") as cf:
 	users = pickle.load(cf)
@@ -18,7 +31,7 @@ print("Clusters loaded.")
 addresses = set()
 for address, cluster in users.items():
 	if cluster == cluster_n:
-		addresses.add(address)
+		addresses.add(tuple(address,dest_addr))
 print("%d addresses loaded." % len(addresses))
 del users
 
@@ -31,13 +44,15 @@ print("Graph loaded.")
 
 paths = []
 
+p = Pool(N_PROCESSES)
+
 with open(str(cluster_n) + "_to_" + str(dest_addr) + ".txt", 'w') as f:
 
-	for address in addresses:
-		new_paths = list(nx.all_simple_paths(G, source=address, target=dest_addr))
-		paths += new_paths
+	res = set(p.map(find, addresses))
+	res.remove(None)
 
-		print("Added %d new paths from address %s to address %s with min length %d." %(len(new_paths), address, dest_addr, min([len(x) for x in new_paths])))
+	for new_paths in res:
+		paths += new_paths
 
 	# Sort paths by length
 	paths.sort(key=len)
