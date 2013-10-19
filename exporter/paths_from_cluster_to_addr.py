@@ -10,8 +10,6 @@ from sys import argv
 # Cluster number
 cluster_n = int(argv[1])
 dest_addr = argv[2]
-# Number of processes
-N_PROCESSES = 32
 
 def find(address):
 	paths = list(nx.all_simple_paths(G, source=address, target=dest_addr))
@@ -43,7 +41,7 @@ print("Graph loaded.")
 
 paths = []
 
-p = Pool(N_PROCESSES)
+p = Pool()
 
 with open(str(cluster_n) + "_to_" + str(dest_addr) + ".txt", 'w') as f:
 
