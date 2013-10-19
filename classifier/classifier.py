@@ -17,7 +17,8 @@ parser = argparse.ArgumentParser(description="BitIodine Classifier")
 parser.add_argument('-d', dest='db', default="features.sqlite",
 				   help='SQLite database path')
 parser.add_argument("-a", dest="address", default=None, help="Classify a single address.")
-parser.add_argument("-f", dest="filename", default=None, help="Classify every address in a text file, one per line.")
+parser.add_argument("-af", dest="address_filename", default=None, help="Classify every address in a text file, one per line.")
+parser.add_argument("-cf", dest="cluster_filename", default=None, help="Classify every cluster in a text file, one per line.")
 parser.add_argument("-c", dest="cluster", type=int, default=None, help="Classify a single cluster.")
 parser.add_argument("--all-clusters", action="store_true", dest="all_clusters", default=False, help="Classify every cluster.")
 options = parser.parse_args()
@@ -49,16 +50,26 @@ users = stripSingletons(users)
 
 print("Singletons stripped.")
 
-if options.filename is not None:
-	with open(options.filename, "r") as af:
+clusters = None
+
+if options.cluster_filename is not None:
+	with open(options.cluster_filename, "r") as af:
+		clusters = [int(line.strip()) for line in af]
+	options.cluster = -1
+elif options.address_filename is not None:
+	with open(options.address_filename, "r") as af:
 		addresses = [line.strip() for line in af]
 elif options.address is not None:
 	addresses = [options.address]
-elif options.cluster is not None:
-	print("Classifying cluster %d..." % options.cluster)
+if options.cluster is not None:
+	if options.cluster != -1:
+		print("Classifying cluster %d..." % options.cluster)
+		clusters = [options.cluster]
+	else:
+		print("Classifying clusters...")
 	addresses = []
 	for address, cluster in users.items():
-		if cluster == options.cluster:
+		if cluster in clusters:
 			addresses.append(address)
 	if len(addresses) == 0:
 		die("Cluster is empty, singleton or not existent.")
