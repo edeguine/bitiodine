@@ -45,11 +45,11 @@ p = Pool()
 
 with open(str(cluster_n) + "_to_" + str(dest_addr) + ".txt", 'w') as f:
 
-	res = set(p.map(find, addresses))
-	res.remove(None)
+	res = p.map(find, addresses)
 
 	for new_paths in res:
-		paths += new_paths
+		if new_paths is not None:
+			paths += new_paths
 
 	# Sort paths by length
 	paths.sort(key=len)
