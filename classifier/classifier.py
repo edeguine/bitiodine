@@ -282,6 +282,6 @@ if options.cluster is not None:
 		for x in scores + labels + labels_string:
 			params.append(t[x])
 
-		params.extend([t['max_balance'], t['min_balance'], t['avg_balance']])
+		params.extend([t['min_balance'], t['max_balance'], t['avg_balance']])
 
 		db.query(features_update_cluster_query, params)
