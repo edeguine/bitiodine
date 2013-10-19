@@ -11,10 +11,9 @@ from sys import argv
 cluster_n = int(argv[1])
 dest_addr = argv[2]
 # Number of processes
-N_PROCESSES = 8
+N_PROCESSES = 32
 
-def find(pack):
-	(address, dest_addr, G) = pack
+def find(address):
 	paths = list(nx.all_simple_paths(G, source=address, target=dest_addr))
 	print("Added %d new paths from address %s to address %s with min length %d." %(len(new_paths), address, dest_addr, min([len(x) for x in new_paths])))
 
@@ -33,10 +32,10 @@ with open('../grapher/tx_graph.dat', "rb") as infile:
 
 print("Graph loaded.")
 
-pack = set()
+addresses = set()
 for address, cluster in users.items():
 	if cluster == cluster_n:
-		pack.add(tuple([address, dest_addr, G]))
+		addresses.add(address)
 print("%d addresses loaded." % len(addresses))
 del users
 
@@ -48,7 +47,7 @@ p = Pool(N_PROCESSES)
 
 with open(str(cluster_n) + "_to_" + str(dest_addr) + ".txt", 'w') as f:
 
-	res = set(p.map(find, pack))
+	res = set(p.map(find, addresses))
 	res.remove(None)
 
 	for new_paths in res:
