@@ -10,15 +10,13 @@ from sys import argv
 # Cluster number
 cluster_n = int(argv[1])
 dest_addr = argv[2]
-# Cutoff (max depth of a chain to test)
-CUTOFF = 100
 
 def find(address):
-	paths = list(nx.all_simple_paths(G, source=address, target=dest_addr, cutoff=CUTOFF))
-	print("Added %d new paths from address %s to address %s with min length %d." %(len(paths), address, dest_addr, min([len(x) for x in paths])))
+	path = nx.shortest_path(G, source=address, target=dest_addr)
+	print("Found shortest path from address %s to address %s with length %d." % (address, dest_addr, len(path)))
 
-	if len(paths) > 0:
-		return paths
+	if len(path) > 0:
+		return path
 	else:
 		return None
 

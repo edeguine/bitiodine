@@ -13,7 +13,7 @@ dest_addr = argv[2]
 
 def find(address):
 	paths = list(nx.all_simple_paths(G, source=address))
-	print("Added %d new paths from address %s with min length %d." %(len(new_paths), address, min([len(x) for x in new_paths])))
+	print("Added %d new paths from address %s with min length %d." %(len(paths), address, min([len(x) for x in paths])))
 
 	if len(paths) > 0:
 		return paths
