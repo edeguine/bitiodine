@@ -51,7 +51,7 @@ print("Singletons stripped.")
 
 if options.filename is not None:
 	with open(options.filename, "r") as f:
-		addresses = [line for line in f]
+		addresses = [line.strip() for line in f]
 elif options.address is not None:
 	addresses = [options.address]
 elif options.cluster is not None:
