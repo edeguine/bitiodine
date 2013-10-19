@@ -27,11 +27,6 @@ with open("../clusterizer/clusters.dat", "rb") as cf:
 
 print("Clusters loaded.")
 
-with open('../grapher/tx_graph.dat', "rb") as infile:
-	G = pickle.load(infile)
-
-print("Graph loaded.")
-
 addresses = set()
 for address, cluster in users.items():
 	if cluster == cluster_n:
@@ -40,6 +35,11 @@ print("%d addresses loaded." % len(addresses))
 del users
 
 gc.collect()
+
+with open('../grapher/tx_graph.dat', "rb") as infile:
+	G = pickle.load(infile)
+
+print("Graph loaded.")
 
 paths = []
 
