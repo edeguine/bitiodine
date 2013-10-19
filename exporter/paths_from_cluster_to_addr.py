@@ -31,7 +31,7 @@ print("Clusters loaded.")
 addresses = set()
 for address, cluster in users.items():
 	if cluster == cluster_n:
-		addresses.add(tuple(address,dest_addr))
+		addresses.add(tuple([address,dest_addr]))
 print("%d addresses loaded." % len(addresses))
 del users
 
