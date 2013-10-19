@@ -17,6 +17,7 @@ parser = argparse.ArgumentParser(description="BitIodine Classifier")
 parser.add_argument('-d', dest='db', default="features.sqlite",
 				   help='SQLite database path')
 parser.add_argument("-a", dest="address", default=None, help="Classify a single address.")
+parser.add_argument("-f", dest="filename", default=None, help="Classify every address in a text file, one per line.")
 parser.add_argument("-c", dest="cluster", type=int, default=None, help="Classify a single cluster.")
 parser.add_argument("--all-clusters", action="store_true", dest="all_clusters", default=False, help="Classify every cluster.")
 options = parser.parse_args()
@@ -48,7 +49,10 @@ users = stripSingletons(users)
 
 print("Singletons stripped.")
 
-if options.address is not None:
+if options.filename is not None:
+	with open(options.filename, "r") as f:
+		addresses = [for line in f]
+elif options.address is not None:
 	addresses = [options.address]
 elif options.cluster is not None:
 	print("Classifying cluster %d..." % options.cluster)
