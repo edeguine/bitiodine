@@ -30,7 +30,7 @@ for cluster in clusters:
 	print(cluster)
 
 # Augment known addresses with addresses in clusters
-for address, cluster in users:
+for address, cluster in users.items():
 	if cluster in clusters:
 		known.add(address)
 
