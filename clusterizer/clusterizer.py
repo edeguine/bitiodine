@@ -25,6 +25,10 @@ parser.add_argument("--generate-clusters", action="store_true", dest="generate",
 	help="Generate clusters (takes a long time)")
 parser.add_argument("--load-clusters", action="store_true", dest="load", default=False,
 	help="Load a previously generated clusters from disk")
+parser.add_argument("--print-cluster", dest="print_cluster", default=None,
+	help="Display all addresses belonging to a cluster")
+parser.add_argument("--print-address", dest="print_address", default=None,
+	help="Display the cluster ID to which an address belongs")
 options = parser.parse_args()
 
 db = SQLiteWrapper(options.db)
@@ -155,3 +159,23 @@ if options.load:
 		writer.writerow(['size', 'count'])
 		for i in range(0, len(hist)):
 			writer.writerow([int(bin_edges[i]), hist[i]])
+
+if options.print_cluster is not None:
+	try:
+		users, _ = load(FILENAME)
+		print("Clusters loaded - %d clusters, %d addresses in clusters." % (len(set(users.values())), len(users)))
+	except Exception as e:
+		die(e)
+
+	for address, cluster in users.items():
+		if cluster == options.print_cluster:
+			print address
+
+if options.print_address is not None:
+	try:
+		users, _ = load(FILENAME)
+		print("Clusters loaded - %d clusters, %d addresses in clusters." % (len(set(users.values())), len(users)))
+	except Exception as e:
+		die(e)
+
+	print users[options.print_address]
