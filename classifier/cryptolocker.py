@@ -62,5 +62,5 @@ with open("cryptolocker_tx.txt", "w") as tf:
 	for row in detail_res:
 		for datetime, tx_hash, address in row:
 			print("%s, %s, %s" % (datetime, tx_hash, address))
-			rf.write("%s, %s, %s" % (datetime, tx_hash, address))
+			tf.write("%s, %s, %s" % (datetime, tx_hash, address))
 
