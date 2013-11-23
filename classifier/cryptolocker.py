@@ -52,12 +52,15 @@ detail_query = "SELECT address, COUNT(*) AS ransoms FROM tx_full WHERE address I
 
 tx_query = "SELECT datetime(time, 'unixepoch'), tx_hash, txout_value, address FROM tx_full WHERE address IN " + clusters_query + " AND ((txout_value BETWEEN 1.9e8 AND 2.1e8) OR ((txout_value BETWEEN 0.4e8 AND 0.6e8) AND time > 1384041600) OR (txout_value BETWEEN 9.9e8 AND 10.1e8)) AND time > 1378425600 ORDER BY time ASC"
 
+group_query = "SELECT date(time, 'unixepoch') AS tx_date, SUM(txout_value) FROM tx_full WHERE address IN " + clusters_query + " AND ((txout_value BETWEEN 1.9e8 AND 2.1e8) OR ((txout_value BETWEEN 0.4e8 AND 0.6e8) AND time > 1384041600) OR (txout_value BETWEEN 9.9e8 AND 10.1e8)) AND time > 1378425600 GROUP BY tx_date ORDER BY time ASC"
+
 sum_res = float(db_blockchain.query(sum_query, fetch_one=True))
 
 print("Sum: %f" % sum_res)
 
 detail_res = db_blockchain.query(detail_query)
 tx_res = db_blockchain.query(tx_query)
+group_res = db_blockchain.query(group_query)
 
 with open("cryptolocker_ransoms.txt", "w") as rf:
 	for row in detail_res:
@@ -70,4 +73,10 @@ with open("cryptolocker_tx.txt", "w") as tf:
 		datetime, tx_hash, value, address = row
 		print("\"%s\", %s, %f, %s" % (datetime, tx_hash, float(value)/1e8, address))
 		tf.write("\"%s\", %s, %f, %s\n" % (datetime, tx_hash, float(value)/1e8, address))
+
+with open("cryptolocker_group.txt", "w") as gf:
+	for row in group_res:
+		date, value = row
+		print("\"%s\", %f" % (date, float(value)/1e8))
+		gf.write("\"%s\", %f\n" % (date, float(value)/1e8))
 
