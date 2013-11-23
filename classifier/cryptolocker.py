@@ -59,7 +59,7 @@ with open("cryptolocker_ransoms.txt", "w") as rf:
 			rf.write("%s, %d\n" % (address, int(ransoms)))
 
 with open("cryptolocker_tx.txt", "w") as tf:
-	for row in detail_res:
+	for row in tx_res:
 		for datetime, tx_hash, value, address in row:
 			print("%s, %s, %f, %s" % (datetime, tx_hash, float(value)/1e8, address))
 			tf.write("%s, %s, %f, %s\n" % (datetime, tx_hash, float(value)/1e8, address))
