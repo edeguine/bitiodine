@@ -34,6 +34,8 @@ for address, cluster in users.items():
 	if cluster in clusters:
 		known.add(address)
 
+print("%d addresses in total." % len(known))
+
 # Free memory
 del(users)
 
