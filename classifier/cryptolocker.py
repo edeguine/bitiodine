@@ -6,14 +6,14 @@ import logging
 
 db = SQLiteWrapper("cryptolocker.db")
 
-known = []
+known = set()
 clusters = set()
 
 db_blockchain = SQLiteWrapper("../blockchain/blockchain.sqlite")
 
 with open("cryptolocker_known.txt") as f:
 	for addr in f:
-		known.append(addr.strip())
+		known.add(addr.strip())
 
 print("Known addresses imported.")
 
@@ -24,12 +24,18 @@ print("Clusters loaded.")
 for addr in known:
 	clusters.add(users[addr])
 
-del(users)
-
 print("%d clusters found." % len(clusters))
 
 for cluster in clusters:
 	print(cluster)
+
+# Augment known addresses with addresses in clusters
+for address, cluster in users:
+	if cluster in clusters:
+		known.add(address)
+
+# Free memory
+del(users)
 
 clusters_query = '(' + ', '.join([str(k) for k in clusters]) + ')'
 
