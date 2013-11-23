@@ -163,7 +163,7 @@ if options.load:
 if options.print_cluster is not None:
 	try:
 		users, _ = load(FILENAME)
-		print("Clusters loaded - %d clusters, %d addresses in clusters." % (len(set(users.values())), len(users)))
+		#print("Clusters loaded - %d clusters, %d addresses in clusters." % (len(set(users.values())), len(users)))
 	except Exception as e:
 		die(e)
 
@@ -174,7 +174,7 @@ if options.print_cluster is not None:
 if options.print_address is not None:
 	try:
 		users, _ = load(FILENAME)
-		print("Clusters loaded - %d clusters, %d addresses in clusters." % (len(set(users.values())), len(users)))
+		#print("Clusters loaded - %d clusters, %d addresses in clusters." % (len(set(users.values())), len(users)))
 	except Exception as e:
 		die(e)
 
