@@ -46,11 +46,11 @@ with open('cryptolocker_known.txt', 'w') as f:
 
 clusters_query = '(' + ', '.join(['"' + str(k) + '"' for k in known]) + ')'
 
-sum_query = "SELECT SUM(txout_value)/1e8 FROM tx_full WHERE address IN " + clusters_query + " AND ((txout_value BETWEEN 1.9e8 AND 2.1e8) OR (txout_value BETWEEN 0.4e8 AND 0.6e8) OR (txout_value BETWEEN 9.9e8 AND 10.1e8))"
+sum_query = "SELECT SUM(txout_value)/1e8 FROM tx_full WHERE address IN " + clusters_query + " AND ((txout_value BETWEEN 1.9e8 AND 2.1e8) OR (txout_value BETWEEN 0.4e8 AND 0.6e8) OR (txout_value BETWEEN 9.9e8 AND 10.1e8)) AND time > 1378425600"
 
-detail_query = "SELECT address, COUNT(*) AS ransoms FROM tx_full WHERE address IN " + clusters_query + " AND ((txout_value BETWEEN 1.9e8 AND 2.1e8) OR (txout_value BETWEEN 0.4e8 AND 0.6e8) OR (txout_value BETWEEN 9.9e8 AND 10.1e8)) GROUP BY address ORDER by ransoms DESC"
+detail_query = "SELECT address, COUNT(*) AS ransoms FROM tx_full WHERE address IN " + clusters_query + " AND ((txout_value BETWEEN 1.9e8 AND 2.1e8) OR (txout_value BETWEEN 0.4e8 AND 0.6e8) OR (txout_value BETWEEN 9.9e8 AND 10.1e8)) AND time > 1378425600 GROUP BY address ORDER by ransoms DESC"
 
-tx_query = "SELECT datetime(time, 'unixepoch'), tx_hash, txout_value, address FROM tx_full WHERE address IN " + clusters_query + " AND ((txout_value BETWEEN 1.9e8 AND 2.1e8) OR (txout_value BETWEEN 0.4e8 AND 0.6e8) OR (txout_value BETWEEN 9.9e8 AND 10.1e8)) ORDER BY time ASC"
+tx_query = "SELECT datetime(time, 'unixepoch'), tx_hash, txout_value, address FROM tx_full WHERE address IN " + clusters_query + " AND ((txout_value BETWEEN 1.9e8 AND 2.1e8) OR (txout_value BETWEEN 0.4e8 AND 0.6e8) OR (txout_value BETWEEN 9.9e8 AND 10.1e8)) AND time > 1378425600 ORDER BY time ASC"
 
 sum_res = float(db_blockchain.query(sum_query, fetch_one=True))
 
