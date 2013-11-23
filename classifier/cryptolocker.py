@@ -56,11 +56,11 @@ with open("cryptolocker_ransoms.txt", "w") as rf:
 	for row in detail_res:
 		for address, ransoms in row:
 			print("%s, %d" % (address, int(ransoms)))
-			rf.write("%s, %d" % (address, int(ransoms)))
+			rf.write("%s, %d\n" % (address, int(ransoms)))
 
 with open("cryptolocker_tx.txt", "w") as tf:
 	for row in detail_res:
 		for datetime, tx_hash, address in row:
 			print("%s, %s, %s" % (datetime, tx_hash, address))
-			tf.write("%s, %s, %s" % (datetime, tx_hash, address))
+			tf.write("%s, %s, %s\n" % (datetime, tx_hash, address))
 
