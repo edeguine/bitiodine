@@ -37,6 +37,11 @@ for address, cluster in users:
 # Free memory
 del(users)
 
+# Dump addresses to file
+with open('cryptolocker_known.txt', 'w') as f:
+	for k in known:
+		f.write(k + '\n')
+
 clusters_query = '(' + ', '.join(['"' + str(k) + '"' for k in known]) + ')'
 
 sum_query = "SELECT SUM(txout_value)/1e8 FROM tx_full WHERE address IN " + clusters_query + " AND ((txout_value BETWEEN 1.98e8 AND 2.01e8) OR (txout_value BETWEEN 0.48e8 AND 0.52e8) OR (txout_value BETWEEN 9.98e8 AND 10.02e8))"
