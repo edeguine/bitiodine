@@ -43,7 +43,7 @@ sum_query = "SELECT SUM(txout_value)/1e8 FROM tx_full WHERE address IN " + clust
 
 detail_query = "SELECT address, COUNT(*) AS ransoms FROM tx_full WHERE address IN " + clusters_query + " AND ((txout_value BETWEEN 1.98e8 AND 2.01e8) OR (txout_value BETWEEN 0.48e8 AND 0.52e8) OR (txout_value BETWEEN 9.98e8 AND 10.02e8)) GROUP BY address ORDER by ransoms DESC"
 
-tx_query = "SELECT datetime(time, 'unixepoch'), tx_hash, address FROM tx_full WHERE address IN " + clusters_query + " AND ((txout_value BETWEEN 1.98e8 AND 2.01e8) OR (txout_value BETWEEN 0.48e8 AND 0.52e8) OR (txout_value BETWEEN 9.98e8 AND 10.02e8)) ORDER BY time ASC"
+tx_query = "SELECT datetime(time, 'unixepoch'), tx_hash, txout_value, address FROM tx_full WHERE address IN " + clusters_query + " AND ((txout_value BETWEEN 1.98e8 AND 2.01e8) OR (txout_value BETWEEN 0.48e8 AND 0.52e8) OR (txout_value BETWEEN 9.98e8 AND 10.02e8)) ORDER BY time ASC"
 
 sum_res = float(db_blockchain.query(sum_query, fetch_one=True))
 
@@ -60,7 +60,7 @@ with open("cryptolocker_ransoms.txt", "w") as rf:
 
 with open("cryptolocker_tx.txt", "w") as tf:
 	for row in detail_res:
-		for datetime, tx_hash, address in row:
-			print("%s, %s, %s" % (datetime, tx_hash, address))
-			tf.write("%s, %s, %s\n" % (datetime, tx_hash, address))
+		for datetime, tx_hash, value, address in row:
+			print("%s, %s, %f, %s" % (datetime, tx_hash, float(value)/1e8, address))
+			tf.write("%s, %s, %f, %s\n" % (datetime, tx_hash, float(value)/1e8, address))
 
