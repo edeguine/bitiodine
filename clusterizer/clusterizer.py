@@ -169,7 +169,7 @@ if options.print_cluster is not None:
 
 	for address, cluster in users.items():
 		if cluster == options.print_cluster:
-			print address
+			print(address)
 
 if options.print_address is not None:
 	try:
@@ -178,4 +178,4 @@ if options.print_address is not None:
 	except Exception as e:
 		die(e)
 
-	print users[options.print_address]
+	print(users[options.print_address])
