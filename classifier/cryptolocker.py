@@ -37,7 +37,7 @@ for address, cluster in users:
 # Free memory
 del(users)
 
-clusters_query = '(' + ', '.join([str(k) for k in clusters]) + ')'
+clusters_query = '(' + ', '.join([str(k) for k in known]) + ')'
 
 sum_query = "SELECT SUM(txout_value)/1e8 FROM tx_full WHERE address IN " + clusters_query + " AND ((txout_value BETWEEN 1.98e8 AND 2.01e8) OR (txout_value BETWEEN 0.48e8 AND 0.52e8) OR (txout_value BETWEEN 9.98e8 AND 10.02e8))"
 
