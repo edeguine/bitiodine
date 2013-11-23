@@ -168,7 +168,7 @@ if options.print_cluster is not None:
 		die(e)
 
 	for address, cluster in users.items():
-		if cluster == options.print_cluster:
+		if cluster == int(options.print_cluster):
 			print(address)
 
 if options.print_address is not None:
