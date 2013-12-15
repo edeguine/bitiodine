@@ -49,7 +49,7 @@ with open('cryptolocker_known.txt', 'w') as f:
 
 clusters_query = '(' + ', '.join(['"' + str(k) + '"' for k in known]) + ')'
 
-ransoms_signature = ' AND (((txout_value BETWEEN 1.9e8 AND 2.1e8) ) OR ((txout_value BETWEEN 0.4e8 AND 0.6e8) AND time BETWEEN 1384041600 AND 1385251199) OR ((txout_value BETWEEN 0.25e8 AND 0.35e8) AND time > 1385251200) OR ((txout_value BETWEEN 9.9e8 AND 10.1e8) AND time BETWEEN 1383264000 AND 1383523200)) AND time > 1378425600'
+ransoms_signature = ' AND (((txout_value BETWEEN 1.95e8 AND 2.05e8) ) OR ((txout_value BETWEEN 0.45e8 AND 0.55e8) AND time BETWEEN 1384041600 AND 1385251199) OR ((txout_value BETWEEN 0.25e8 AND 0.35e8) AND time > 1385251200) OR ((txout_value BETWEEN 9.95e8 AND 10.05e8) AND time BETWEEN 1383264000 AND 1383523200)) AND time > 1378425600'
 
 sum_query = "SELECT SUM(txout_value)/1e8 FROM tx_full WHERE address IN " + clusters_query + ransoms_signature
 
