@@ -83,5 +83,4 @@ with open("cryptolocker_group.txt", "w") as gf:
 	for row in group_res:
 		date, value, count = row
 		print("\"%s\", %f, %d" % (date, float(value)/1e8, int(count)))
-		gf.write("\"%s\", %f, %d\n" % (date, float(value)/1e8, int(count))
-
+		gf.write("\"%s\", %f, %d\n" % (date, float(value)/1e8, int(count)))
