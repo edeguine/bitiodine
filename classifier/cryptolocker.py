@@ -57,7 +57,7 @@ detail_query = "SELECT address, COUNT(*) AS ransoms FROM tx_full WHERE address I
 
 tx_query = "SELECT datetime(time, 'unixepoch'), tx_hash, txout_value, address FROM tx_full WHERE address IN " + clusters_query + ransoms_signature + " ORDER BY time ASC"
 
-group_query = "SELECT date(time, 'unixepoch') AS tx_date, SUM(txout_value) FROM tx_full WHERE address IN " + clusters_query + ransoms_signature + " GROUP BY tx_date ORDER BY time ASC"
+group_query = "SELECT date(time, 'unixepoch') AS tx_date, SUM(txout_value), COUNT(*) FROM tx_full WHERE address IN " + clusters_query + ransoms_signature + " GROUP BY tx_date ORDER BY time ASC"
 
 sum_res = float(db_blockchain.query(sum_query, fetch_one=True))
 
@@ -81,7 +81,7 @@ with open("cryptolocker_tx.txt", "w") as tf:
 
 with open("cryptolocker_group.txt", "w") as gf:
 	for row in group_res:
-		date, value = row
-		print("\"%s\", %f" % (date, float(value)/1e8))
-		gf.write("\"%s\", %f\n" % (date, float(value)/1e8))
+		date, value, count = row
+		print("\"%s\", %f, %d" % (date, float(value)/1e8, int(count)))
+		gf.write("\"%s\", %f, %d\n" % (date, float(value)/1e8), int(count))
 
