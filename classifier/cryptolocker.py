@@ -22,7 +22,10 @@ with open("../clusterizer/clusters.dat", "rb") as cf:
 print("Clusters loaded.")
 
 for addr in known:
-	clusters.add(users[addr])
+	try:
+		clusters.add(users[addr])
+	except:
+		pass
 
 print("%d clusters found." % len(clusters))
 
